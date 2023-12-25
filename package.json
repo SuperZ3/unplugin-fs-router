@@ -1,0 +1,56 @@
+{
+  "name": "next-like-routes",
+  "version": "1.0.0",
+  "description": "",
+  "module": "./dist/index.mjs",
+  "main": "./dist/index.umd.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.umd.js"
+    },
+    "./client": "./client.d.ts"
+  },
+  "files": [
+    "dist",
+    "*.ts"
+  ],
+  "scripts": {
+    "test": "jest -c ../jest.config.ts --roots=page-routes",
+    "build": "rimraf dist && vite build && tsc"
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "format": [
+      "cjs",
+      "esm"
+    ],
+    "dts": true,
+    "splitting": false,
+    "clean": true,
+    "external": [
+      "react-router-dom"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "peerDependencies": {
+    "react-router": "*",
+    "react-router-dom": "*"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "react": "^18.2.0",
+    "react-router": "^6.20.1",
+    "tsup": "^8.0.1",
+    "vite": "^5.0.7"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.2"
+  }
+}
