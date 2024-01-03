@@ -42,7 +42,7 @@ export function genRoutes(rootPath: string) {
   if (routePaths.length > 0) {
       const prementRoutes = genRoutesWithCompPath(routePaths)
       const code = genCode(prementRoutes)
-      console.log(code)
+      // console.log(code)
       return code
   }
   return `const Routes = []; export default Routes`
@@ -70,7 +70,7 @@ export function genRoutesWithCompPath(routePaths: string[]) {
           .replace(...replacement.all)
           .replace(...replacement.param)
           .replace(...replacement.route)
-  
+          
       if (processRoute) {
           const routePathArr = processRoute.split("/")
           const routePathLen = routePathArr.length
@@ -85,8 +85,9 @@ export function genRoutesWithCompPath(routePaths: string[]) {
                   const layout = result.length > 0 && result.find((route) => route?.path === undefined)
                   const target = layout && layout?.children ? layout.children : result
                   let rootRoute = target?.find((route) => route.path === path)
+                  
                   if (rootRoute === undefined) {
-                      rootRoute = getRoute(routePath)
+                      rootRoute = isLeaf ? getRoute(routePath) : {}
                       rootRoute.path = path
                       target.push(rootRoute)
                   }
@@ -102,11 +103,11 @@ export function genRoutesWithCompPath(routePaths: string[]) {
 
               if (!isLayout) {
                   const layout = parent?.children?.find((child) => child.path === undefined)
-                  if (layout) {
-                      parent = layout
+                  if (layout?.children?.find((route) => route.path === segment)) {
+                    parent = layout
                   }
                   if (!parent?.children) {
-                      parent.children = []
+                    parent.children = []
                   }
                   let target = parent.children.find((child) => child.path === segment)
                   if (!target) {
@@ -148,7 +149,7 @@ export function genRoutesWithCompPath(routePaths: string[]) {
       route.path = '*'
       result.push(route)
   }
-  // console.log(JSON.stringify(result, null, 2))
+  console.log(JSON.stringify(result, null, 2))
   return result
 }
 
