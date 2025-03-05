@@ -1,56 +1,121 @@
 {
-  "name": "next-like-routes",
-  "version": "1.0.0",
-  "description": "",
-  "module": "./dist/index.mjs",
-  "main": "./dist/index.umd.js",
-  "types": "./dist/index.d.ts",
+  "name": "unplugin-fs-router",
+  "version": "0.1.0",
+  "description": "File based router for React-Router and Vue-Router",
+  "type": "module",
+  "packageManager": "pnpm@9.15.4",
+  "homepage": "https://github.com/SuperZ3/unplugin-fs-router#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SuperZ3/unplugin-vue-router.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "unplugin",
+    "vite",
+    "webpack",
+    "rollup",
+    "react-router",
+    "vue-router",
+    "pages",
+    "filesystem",
+    "types",
+    "typed",
+    "next",
+    "router"
+  ],
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.umd.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
-    "./client": "./client.d.ts"
+    "./vite": {
+      "import": "./dist/vite.js",
+      "require": "./dist/vite.cjs"
+    },
+    "./webpack": {
+      "import": "./dist/webpack.js",
+      "require": "./dist/webpack.cjs"
+    },
+    "./rollup": {
+      "import": "./dist/rollup.js",
+      "require": "./dist/rollup.cjs"
+    },
+    "./types": {
+      "import": "./dist/types.js",
+      "require": "./dist/types.cjs"
+    },
+    "./*": "./*"
   },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "*.ts"
+    "vue-routes.d.ts",
+    "client.d.ts",
+    "LICENSE"
   ],
   "scripts": {
-    "test": "jest -c ../jest.config.ts --roots=page-routes",
-    "build": "rimraf dist && vite build && tsc"
+    "test": "vitest",
+    "test:e2e": "vitest -c vitest.config.e2e.ts",
+    "build": "rimraf dist && tsup",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+  },
+  "lint-staged": {
+    "*.{js,mjs,json,cjs,md}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
   },
   "tsup": {
     "entry": [
-      "src/index.ts"
+      "./src/index.ts",
+      "./src/rollup.ts",
+      "./src/vite.ts",
+      "./src/webpack.ts"
     ],
     "format": [
       "cjs",
       "esm"
     ],
     "dts": true,
-    "splitting": false,
-    "clean": true,
-    "external": [
-      "react-router-dom"
-    ]
+    "splitting": true,
+    "clean": true
   },
-  "keywords": [],
-  "author": "",
   "peerDependencies": {
     "react-router": "*",
-    "react-router-dom": "*"
+    "vue-router": "*"
   },
-  "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.10.5",
+    "@antfu/eslint-config": "^4.3.0",
+    "@types/node": "^22.13.5",
+    "conventional-changelog-cli": "^5.0.0",
+    "eslint": "^8.55.0",
+    "lint-staged": "^15.4.3",
     "react": "^18.2.0",
     "react-router": "^6.20.1",
+    "rollup": "^4.34.8",
     "tsup": "^8.0.1",
-    "vite": "^5.0.7"
+    "typescript": "^5.7.3",
+    "vite": "^5.0.10",
+    "webpack": "^5.98.0"
+  },
+  "engines": {
+    "node": ">=18.12.0"
   },
   "dependencies": {
-    "fast-glob": "^3.3.2"
+    "chokidar": "^4.0.3",
+    "fast-glob": "^3.3.2",
+    "rimraf": "^6.0.1",
+    "unplugin": "^2.2.0",
+    "unplugin-fs-router": "link:",
+    "unplugin-utils": "^0.2.4",
+    "vitest": "^3.0.7",
+    "vue-router": "4.2.5"
   }
 }

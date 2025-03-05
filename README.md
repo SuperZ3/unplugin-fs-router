@@ -1,67 +1,70 @@
-# 简易版文件路由
+基于文件系统的路由
 
-base on react-router-dom
+插件默认遍历 `src/pages` 下的文件并生成对应的路由
 
-`const FileExt = /\.(jsx|tsx)$/`
+## 基础路由
 
-## Conventions
+`const fileExt = /\.(vue|(j|t)sx)$/`
 
-一个 *.(FileExt) 结尾的文件，默认导出一个 React.Component，定义了一个路由：`pages/about.tsx` -> `/about`
+以 `fileExt` 结尾的文件表示当前文件是一个可访问的路由，以 `folderName/index.fileExt` 结尾的路由表示当前目录是一个可访问的路由：
+
+```markdown
+| 目录结构 | 路由 |
+| :---: | :---: |
+| `root/user.tsx` | `/user` |
+| `root/index.tsx` | `/` |
+```
+
+注意，如果一个文件夹下没有 `index.tsx` 那么该文件夹对应的路由是不可访问的
+
+### 多级路由
+
+嵌套目录结构会生成多级路由：
+
+```typescript
+src/pages/
+├── blogs/
+│   └── index.tsx
+├── users/
+│   └── index.tsx
+├── users.tsx
+└── index.tsx
+```
+
+```markdown
+| 目录结构 | 路由 |
+| :---: | :---: |
+| `root/index.tsx` | `/` |
+| `root/users.tsx` | `/users` |
+| `root/blogs.tsx` | `/blogs` |
+```
+
+由于 `users` 文件夹和 `users.tsx` 对应相同路由，他们会被替换，应该避免这种情况出现
+
+### 动态路由
+
+用 `[fileName|folderName]` 会创建动态路由
+
+```markdown
+| 目录结构 | 路由 |
+| :---: | :---: |
+| `root/blog/[slug].tsx` | `/blog/:slug` |
+| `root/blog/[username]/index.tsx` | `/blog/:username` |
+| `root/posts/[...all].tsx` | `//posts/*` |
+```
+
+### catch-all routes
+### optional catch-all routes
+### parallel routes
+### intercepting routes
 
 ### NotFound
 
 - `pages/**/404.tsx` -> `*`
 
-### Index routes
-
-文件夹下带有 index.(FileExt) 的文件夹，会自动被当成路由
-
-- `pages/index.tsx` -> `/`
-- `pages/blog/index.tsx` -> `/blog`
-
-### Nested routes
-
-嵌套文件夹会生成嵌套路由
-
-- `pages/blog/first-post.tsx` -> `/blog/first-post`
-- `pages/dashboard/settings/username.tsx` -> `/dashboard/settings/username`
-
-### Dynamic routes
-
-用 `[fileName|folderName]` 创建动态路由, 用 `useRouter` 获取动态路由的值
-
-- `pages/blog/[slug].tsx` -> `/blog/:slug`
-- `pages/blog/[username]/index.tsx` -> `/blog/:username`
-- `src/pages/posts/[...all].tsx` -> `/posts/*`
-
-### Layout
-
-用 `folderName/_layout.tsx` 创建相应层级的 layout，`<Outlet />` 会作为 children 插槽，注入子路由组件
-
-* 注意：`_layout.tsx` 与 `index.tsx` 是同级的并且不会生成路由，你不能同时定义它们，`index.tsx` 优先级高于 `_layout.tsx`
-
 ### Ignored routes
 
 - `_[fileName|folderName]` 会被忽略，不会作为路由
-
-### Component、Loader、Action、Error
-
-- Component 需要作为默认导出 `export default Component() {...}`
-- Loader 函数是可选导出 `export const Loader = () => {...}`
-- Action 函数是可选导出 `export const Action = () => {...}`
-- Error 错误处理组件 `export const Catch = () => {...}`
-
-以上导出会定义如下 route
-
-```javascript
-<Route
-  path="/"
-  loader={Loader}
-  action={Action}
-  element={<Comopnent />}
-  errorElement={<Catch />}
-/>
-```
 
 ## 使用方式
 

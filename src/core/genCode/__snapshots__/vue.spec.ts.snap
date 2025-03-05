@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`react routes > match snapshot 1`] = `
+"import React, { createElement } from 'react';
+
+
+const Routes = [
+
+]
+export default Routes;"
+`;
