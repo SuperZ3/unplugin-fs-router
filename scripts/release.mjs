@@ -6,7 +6,7 @@ import { readFileSync } from "fs";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import minimist from "minimist";
-import prompts from "prompts"
+import prompts from "prompts";
 
 const rootPath = path.join(dirname(fileURLToPath(import.meta.url)), "..");
 const pkgPath = path.join(rootPath, "package.json");
@@ -43,7 +43,7 @@ async function main() {
 		step("compute release version...");
 		const lastVersion = await getLatestVersion();
 		const newVersion = await getNewVersion(lastVersion);
-		
+
 		const { yes: isReleaseConfirmed } = await prompts({
 			type: "confirm",
 			name: "yes",
@@ -66,7 +66,7 @@ async function main() {
 		step("publish...");
 		await publish(newVersion);
 	} catch (error) {
-		console.log(chalk.red(error.message))
+		console.log(chalk.red(error.message));
 	}
 }
 
@@ -134,8 +134,8 @@ async function getNewVersion(lastVersion) {
 			throw new Error(`invalid target version: ${version}`);
 		}
 	} catch (error) {
-        throw new Error(error)
-    }
+		throw new Error(error);
+	}
 
 	return version;
 }
@@ -187,10 +187,10 @@ async function gitTag(newVersion) {
 		})`git commit -m 'release:\s${newVersion}'`;
 		await execa({ stdio: "inherit" })`git tag v${newVersion}`;
 		await execa({ stdio: "inherit" })`git push`;
-		await execa({ stdio: "inherit" })`git push origin v${newVersion}`
-		return
+		await execa({ stdio: "inherit" })`git push origin v${newVersion}`;
+		return;
 	}
-	chalk.blue("Skipping publishing...")
+	chalk.blue("Skipping publishing...");
 }
 
 async function loginNPM() {
@@ -225,11 +225,11 @@ async function loginNPM() {
 
 async function publish(newVersion) {
 	try {
-		await execa({ stdio: "pipe" })`pnpm publish ${
-			isDryRun ? "--dry-run" : ""
-		} ${
-			optionTag ? "--tag " + optionTag : ""
-		}} --access public --publish-branch ${EXPECT_BRANCH}`;
+		await execa({ stdio: "pipe" })`pnpm publish\
+			${isDryRun ? " --dry-run" : ""}\
+			${
+			optionTag ? ` --tag ${optionTag}` : ""
+		}\ --access public --publish-branch ${EXPECT_BRANCH}`;
 		chalk.green(`✅ Successfully published ${PKG_NAME}@${newVersion}`);
 	} catch (error) {
 		throw error;
