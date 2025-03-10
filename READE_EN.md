@@ -1,6 +1,6 @@
 # File System Based Routing
 
-[English](https://github.com/SuperZ3/unplugin-fs-router/README_EN.md) | [中文](https://github.com/SuperZ3/unplugin-fs-router/README.md)
+[English](https://github.com/SuperZ3/unplugin-fs-router/blob/master/READE_EN.md) | [中文](https://github.com/SuperZ3/unplugin-fs-router/blob/master/README.md)
 
 ## Installation
 
