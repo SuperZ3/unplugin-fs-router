@@ -1,6 +1,6 @@
 # 基于文件系统的路由
 
-[English](https://github.com/SuperZ3/unplugin-fs-router/blob/master/READE_EN.md) | [中文](https://github.com/SuperZ3/unplugin-fs-router/blob/master/READE.md)
+[English](https://github.com/SuperZ3/unplugin-fs-router/blob/master/READE_EN.md) | [中文](https://github.com/SuperZ3/unplugin-fs-router/blob/master/READEME.md)
 
 ## 下载
 
