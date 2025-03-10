@@ -225,6 +225,7 @@ async function loginNPM() {
 
 async function publish(newVersion) {
 	try {
+		await execa({ stdio: "pipe"})`pnpm run build`;
 		await execa({ stdio: "pipe" })("pnpm", [
 			"publish",
 			...(isDryRun ? ["--dry-run"] : []),
