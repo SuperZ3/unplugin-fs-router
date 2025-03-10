@@ -225,11 +225,15 @@ async function loginNPM() {
 
 async function publish(newVersion) {
 	try {
-		await execa({ stdio: "pipe" })`pnpm publish\
-			${isDryRun ? " --dry-run" : ""}\
-			${
-			optionTag ? ` --tag ${optionTag}` : ""
-		}\ --access public --publish-branch ${EXPECT_BRANCH}`;
+		await execa({ stdio: "pipe" })("pnpm", [
+			"publish",
+			...(isDryRun ? ["--dry-run"] : []),
+			...(optionTag ? ["--tag", optionTag] : []),
+			"--access",
+			"public",
+			"--publish-branch",
+			EXPECT_BRANCH,
+		]);
 		chalk.green(`✅ Successfully published ${PKG_NAME}@${newVersion}`);
 	} catch (error) {
 		throw error;
